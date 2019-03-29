@@ -1,6 +1,7 @@
 import numpy as np
 import grid
 import math
+import matplotlib.pyplot as plt
 
 def ret_max(array1):
     max_ = -9999999999999999
@@ -38,7 +39,7 @@ def action(state,Q,u,n_episodes,epsilon=0.2):
 
 
 # nXn (n is odd and >1), range_reward/range_noise = 5
-n = 3
+n = 5
 obj = grid.Gridworld(n,5)
 [world,values] = obj.world()
 
@@ -55,6 +56,7 @@ for i in range(n*n):
 
 n_episodes = 1000
 all_trails = []
+reward_trail = []
 alpha = 0.01
 gamma = 0.8
 epsilon = 0.1
@@ -67,15 +69,23 @@ for u in range(n_episodes):
 		[s_p,R] = obj.take_action(s,a)
 		reward += R
 		a_p = action(s_p,Q,u,n_episodes,epsilon)
+
+		max_ = -99999
 		for i in range(len(Q)):
-			for j in range(len(Q)):
-				if Q[i][0] == s and Q[i][1] == a and Q[j][0] == s_p and Q[j][1] == a_p:
-					Q[i][2] = Q[i][2] + alpha*(1-u/n_episodes)*(R + gamma*Q[j][2] - Q[i][2])
+			if Q[i][0] == s_p and Q[i][2]>max_:
+				max_ = Q[i][2]
+
+		for i in range(len(Q)):
+			if Q[i][0] == s and Q[i][1] == a:
+				Q[i][2] = Q[i][2] + alpha*(1-u/n_episodes)*(R + gamma*max_ - Q[i][2])
 		s = s_p
 		a = a_p
 		trail.append(s)
+	reward_trail.append(reward)
 	all_trails.append(trail)
 	print(u+1)
 print(all_trails[n_episodes-1])
 print(Q)
 print(values)
+#plt.plot(reward_trail)
+#plt.show()

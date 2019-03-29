@@ -9,9 +9,13 @@ class Gridworld:
 		self.n = n
 		self.grid = []
 		self.start_state = 0
-		self.terminal_state = n*n-1
+		self.terminal_state = n-1
 		for i in range(n*n):
-			self.grid.append([i,-1,self.transitions(i)])
+			if 0<i and i<n-1:
+				self.grid.append([i,-1000,self.transitions(i)])
+			else:
+				self.grid.append([i,-1,self.transitions(i)])
+
 			#if i%2 == 0:
 			#	self.grid.append([i,-n*n-1,self.transitions(i)])
 			#else:
