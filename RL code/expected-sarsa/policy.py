@@ -65,6 +65,9 @@ for u in range(n_episodes):
 	while(s != obj.terminal_state):
 		[s_p,R] = obj.take_action(s,a)
 		a_p = action(s_p,Q,u,n_episodes,epsilon)
+
+		action_seti = world[s][1]
+		action_setj = world[s_p][1]
 		for i in range(len(Q)):
 			for j in range(len(Q)):
 				if Q[i][0] == s and Q[i][1] == a and Q[j][0] == s_p and Q[j][1] == a_p:

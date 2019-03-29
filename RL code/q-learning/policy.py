@@ -62,8 +62,10 @@ for u in range(n_episodes):
 	s = obj.start_state
 	a = action(s,Q,u,n_episodes,epsilon)
 	trail = [s]
+	reward = 0
 	while(s != obj.terminal_state):
 		[s_p,R] = obj.take_action(s,a)
+		reward += R
 		a_p = action(s_p,Q,u,n_episodes,epsilon)
 		for i in range(len(Q)):
 			for j in range(len(Q)):
